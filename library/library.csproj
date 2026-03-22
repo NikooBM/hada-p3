@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CADProduct.cs" />
+    <Compile Include="ENCategory.cs" />
     <Compile Include="ENProducts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
