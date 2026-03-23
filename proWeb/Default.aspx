@@ -7,7 +7,7 @@
         .form-table td { padding: 5px 8px; vertical-align: middle; }
         .form-table td:first-child { font-weight: bold; width: 110px; }
         .btn-row { margin-top: 10px; }
-        .btn-row asp:Button { margin-right: 4px; }
+        .btn-row input[type="submit"] { margin-right: 4px; }
         .msg { margin-top: 12px; font-size: 13px; }
     </style>
 </asp:Content>
