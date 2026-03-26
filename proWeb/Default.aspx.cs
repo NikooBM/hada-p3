@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
 using library;
 
@@ -14,14 +15,11 @@ namespace proWeb
             if (!IsPostBack)
             {
                 LoadCategories();
-                txtCreationDate.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                txtCreationDate.Text = DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
                 lblMessage.Text = "";
             }
         }
 
-        /// <summary>
-        /// Rellena el DropDownList con las categorías de la BD.
-        /// </summary>
         private void LoadCategories()
         {
             ENCategory enCat = new ENCategory();
@@ -31,14 +29,10 @@ namespace proWeb
 
             foreach (ENCategory cat in cats)
             {
-                // Value = id real de la tabla Categories
                 ddlCategory.Items.Add(new ListItem(cat.Name, cat.Id.ToString()));
             }
         }
 
-        /// <summary>
-        /// Lee los datos del formulario y devuelve un ENProduct.
-        /// </summary>
         private ENProduct GetProductFromForm()
         {
             ENProduct en = new ENProduct();
@@ -50,13 +44,8 @@ namespace proWeb
             int.TryParse(txtAmount.Text.Trim(), out amount);
             en.Amount = amount;
 
-            // Aceptamos coma o punto como separador decimal
-            float price = 0f;
-            float.TryParse(
-                txtPrice.Text.Trim().Replace(',', '.'),
-                NumberStyles.Any,
-                CultureInfo.InvariantCulture,
-                out price);
+            int price = 0;
+            int.TryParse(txtPrice.Text.Trim(), out price);
             en.Price = price;
 
             en.Category = int.Parse(ddlCategory.SelectedValue);
@@ -64,7 +53,7 @@ namespace proWeb
             DateTime dt = DateTime.Now;
             DateTime.TryParseExact(
                 txtCreationDate.Text.Trim(),
-                "dd/MM/yyyy HH:mm:ss",
+                "yyyy-MM-ddTHH:mm",
                 CultureInfo.InvariantCulture,
                 DateTimeStyles.None,
                 out dt);
@@ -73,25 +62,19 @@ namespace proWeb
             return en;
         }
 
-        /// <summary>
-        /// Rellena el formulario con los datos de un ENProduct.
-        /// </summary>
         private void FillForm(ENProduct en)
         {
             txtCode.Text = en.Code;
             txtName.Text = en.Name;
             txtAmount.Text = en.Amount.ToString();
-            txtPrice.Text = en.Price.ToString("F2", CultureInfo.InvariantCulture);
-            txtCreationDate.Text = en.CreationDate.ToString("dd/MM/yyyy HH:mm:ss");
+            txtPrice.Text = ((int)en.Price).ToString();
+            txtCreationDate.Text = en.CreationDate.ToString("yyyy-MM-ddTHH:mm");
 
             ListItem item = ddlCategory.Items.FindByValue(en.Category.ToString());
             if (item != null)
                 ddlCategory.SelectedValue = en.Category.ToString();
         }
 
-        /// <summary>
-        /// Limpia el formulario.
-        /// </summary>
         private void ClearForm(bool keepCode = false)
         {
             string currentCode = txtCode.Text;
@@ -100,15 +83,12 @@ namespace proWeb
             txtName.Text = "";
             txtAmount.Text = "";
             txtPrice.Text = "";
-            txtCreationDate.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+            txtCreationDate.Text = DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
 
             if (ddlCategory.Items.Count > 0)
                 ddlCategory.SelectedIndex = 0;
         }
 
-        /// <summary>
-        /// Valida todos los campos del formulario.
-        /// </summary>
         private bool ValidateForm()
         {
             string code = txtCode.Text.Trim();
@@ -125,6 +105,12 @@ namespace proWeb
                 return false;
             }
 
+            if (!Regex.IsMatch(name, @"^[A-Za-zÁÉÍÓÚáéíóúÑñÜü ]+$"))
+            {
+                ShowError("Name must contain only letters and spaces.");
+                return false;
+            }
+
             int amount;
             if (!int.TryParse(txtAmount.Text.Trim(), out amount) || amount < 0 || amount > 9999)
             {
@@ -132,27 +118,22 @@ namespace proWeb
                 return false;
             }
 
-            float price;
-            if (!float.TryParse(
-                    txtPrice.Text.Trim().Replace(',', '.'),
-                    NumberStyles.Any,
-                    CultureInfo.InvariantCulture,
-                    out price)
-                || price < 0f || price > 9999.99f)
+            int price;
+            if (!int.TryParse(txtPrice.Text.Trim(), out price) || price < 0 || price > 9999)
             {
-                ShowError("Price must be a value between 0 and 9999.99.");
+                ShowError("Price must be an integer between 0 and 9999.");
                 return false;
             }
 
             DateTime dt;
             if (!DateTime.TryParseExact(
                     txtCreationDate.Text.Trim(),
-                    "dd/MM/yyyy HH:mm:ss",
+                    "yyyy-MM-ddTHH:mm",
                     CultureInfo.InvariantCulture,
                     DateTimeStyles.None,
                     out dt))
             {
-                ShowError("Creation Date must follow the format dd/MM/yyyy HH:mm:ss.");
+                ShowError("Creation Date must be a valid date and time.");
                 return false;
             }
 
@@ -243,11 +224,7 @@ namespace proWeb
             if (en.Delete())
             {
                 ShowSuccess("Product deleted successfully.");
-                txtCode.Text = "";
-                txtName.Text = "";
-                txtAmount.Text = "";
-                txtPrice.Text = "";
-                txtCreationDate.Text = "";
+                ClearForm();
             }
             else
             {
