@@ -1,1 +1,7 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="proWeb.Global" Language="C#" %>
+﻿<%@ Application Language="C#" %>
+
+<script runat="server">
+    void Application_Start(object sender, EventArgs e)
+    {
+    }
+</script>
