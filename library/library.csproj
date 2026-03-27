@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>library</RootNamespace>
     <AssemblyName>library</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
@@ -45,7 +45,7 @@
     <Compile Include="CADCategory.cs" />
     <Compile Include="CADProduct.cs" />
     <Compile Include="ENCategory.cs" />
-    <Compile Include="ENProducts.cs" />
+    <Compile Include="ENProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

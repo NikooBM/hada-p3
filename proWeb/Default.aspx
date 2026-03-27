@@ -1,63 +1,23 @@
-﻿<%@ Page Title="Products management" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="proWeb.Default" %>
+<%@ Page Title="Products management" Language="C#" MasterPageFile="~/Site1.Master"
+    AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="proWeb.Default" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-
-    <script type="text/javascript">
-        function onlyLetters(input) {
-            input.value = input.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñÜü ]/g, '');
-        }
-
-        function onlyIntegers(input) {
-            input.value = input.value.replace(/[^0-9]/g, '');
-        }
-    </script>
-
+<%-- Estilos en el ContentPlaceHolder head de la página maestra --%>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style type="text/css">
-        .title {
-            font-size: 26px;
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
-
-        .form-table {
-            border-collapse: collapse;
-        }
-
-        .form-table td {
-            padding: 6px 10px;
-            vertical-align: middle;
-        }
-
-        .form-table td:first-child {
-            font-weight: bold;
-            width: 110px;
-        }
-
-        .txt {
-            width: 220px;
-            padding: 4px 6px;
-        }
-
-        .ddl {
-            width: 180px;
-            padding: 4px 6px;
-        }
-
-        .btn-row {
-            margin-top: 14px;
-            margin-bottom: 12px;
-        }
-
-        .btn-row input[type="submit"] {
-            margin-right: 6px;
-            padding: 4px 10px;
-        }
-
-        .message {
-            margin-top: 8px;
-            font-weight: bold;
-        }
+        .title      { font-size: 26px; font-weight: bold; margin-bottom: 20px; }
+        .form-table { border-collapse: collapse; }
+        .form-table td { padding: 6px 10px; vertical-align: middle; }
+        .form-table td:first-child { font-weight: bold; width: 120px; }
+        .txt  { width: 220px; padding: 4px 6px; }
+        .ddl  { width: 180px; padding: 4px 6px; }
+        .btn-row { margin-top: 14px; margin-bottom: 12px; }
+        .btn-row input[type="submit"] { margin-right: 6px; padding: 4px 10px; }
+        .message { margin-top: 10px; font-weight: bold; }
     </style>
+</asp:Content>
+
+<%-- Contenido del formulario --%>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <div class="title">Products management</div>
 
@@ -65,60 +25,57 @@
         <tr>
             <td>Code</td>
             <td>
-                <asp:TextBox ID="txtCode" runat="server" CssClass="txt"></asp:TextBox>
+                <asp:TextBox ID="txtCode" runat="server"
+                    CssClass="txt" MaxLength="16"></asp:TextBox>
             </td>
         </tr>
-
         <tr>
             <td>Name</td>
             <td>
-                <asp:TextBox ID="txtName" runat="server" CssClass="txt"
-                    oninput="onlyLetters(this)"></asp:TextBox>
+                <asp:TextBox ID="txtName" runat="server"
+                    CssClass="txt" MaxLength="32"></asp:TextBox>
             </td>
         </tr>
-
         <tr>
             <td>Amount</td>
             <td>
-                <asp:TextBox ID="txtAmount" runat="server" CssClass="txt"
-                    TextMode="Number" min="0" step="1"
-                    oninput="onlyIntegers(this)"></asp:TextBox>
+                <asp:TextBox ID="txtAmount" runat="server"
+                    CssClass="txt" MaxLength="4"></asp:TextBox>
             </td>
         </tr>
-
         <tr>
             <td>Category</td>
             <td>
-                <asp:DropDownList ID="ddlCategory" runat="server" CssClass="ddl"></asp:DropDownList>
+                <asp:DropDownList ID="ddlCategory" runat="server"
+                    CssClass="ddl"></asp:DropDownList>
             </td>
         </tr>
-
         <tr>
             <td>Price</td>
             <td>
-                <asp:TextBox ID="txtPrice" runat="server" CssClass="txt"
-                    TextMode="Number" min="0" step="1"
-                    oninput="onlyIntegers(this)"></asp:TextBox>
+                <asp:TextBox ID="txtPrice" runat="server"
+                    CssClass="txt" MaxLength="7"></asp:TextBox>
             </td>
         </tr>
-
         <tr>
             <td>Creation Date</td>
             <td>
-                <asp:TextBox ID="txtCreationDate" runat="server" CssClass="txt"
-                    TextMode="DateTimeLocal"></asp:TextBox>
+                <%-- Texto plano con formato dd/mm/aaaa hh:mm:ss según el enunciado --%>
+                <asp:TextBox ID="txtCreationDate" runat="server"
+                    CssClass="txt" MaxLength="19"
+                    placeholder="dd/mm/aaaa hh:mm:ss"></asp:TextBox>
             </td>
         </tr>
     </table>
 
     <div class="btn-row">
-        <asp:Button ID="btnCreate" runat="server" Text="Create" OnClick="btnCreate_Click" />
-        <asp:Button ID="btnUpdate" runat="server" Text="Update" OnClick="btnUpdate_Click" />
-        <asp:Button ID="btnDelete" runat="server" Text="Delete" OnClick="btnDelete_Click" />
-        <asp:Button ID="btnRead" runat="server" Text="Read" OnClick="btnRead_Click" />
+        <asp:Button ID="btnCreate"    runat="server" Text="Create"     OnClick="btnCreate_Click" />
+        <asp:Button ID="btnUpdate"    runat="server" Text="Update"     OnClick="btnUpdate_Click" />
+        <asp:Button ID="btnDelete"    runat="server" Text="Delete"     OnClick="btnDelete_Click" />
+        <asp:Button ID="btnRead"      runat="server" Text="Read"       OnClick="btnRead_Click" />
         <asp:Button ID="btnReadFirst" runat="server" Text="Read First" OnClick="btnReadFirst_Click" />
-        <asp:Button ID="btnReadPrev" runat="server" Text="Read Prev" OnClick="btnReadPrev_Click" />
-        <asp:Button ID="btnReadNext" runat="server" Text="Read Next" OnClick="btnReadNext_Click" />
+        <asp:Button ID="btnReadPrev"  runat="server" Text="Read Prev"  OnClick="btnReadPrev_Click" />
+        <asp:Button ID="btnReadNext"  runat="server" Text="Read Next"  OnClick="btnReadNext_Click" />
     </div>
 
     <asp:Label ID="lblMessage" runat="server" CssClass="message"></asp:Label>

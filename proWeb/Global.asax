@@ -1,7 +1,1 @@
-﻿<%@ Application Language="C#" %>
-
-<script runat="server">
-    void Application_Start(object sender, EventArgs e)
-    {
-    }
-</script>
+<%@ Application CodeBehind="Global.asax.cs" Inherits="proWeb.Global" Language="C#" %>
